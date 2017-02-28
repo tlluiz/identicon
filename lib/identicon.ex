@@ -5,18 +5,28 @@ defmodule Identicon do
   def main(input) do
     input
     |> hash_input
+    |> pick_color
   end
 
   @doc """
-  Receive a string and return a list of the encrypted numbers.
+  Receives a Identicon.Image struct and returns new one with RGB colors.
+  """
+  def pick_color(%Identicon.Image{hex: [r, g, b | _tail]} = image) do
+    %Identicon.Image{image | color: {r, g, b}}
+  end
+
+  @doc """
+  Receives a string and returns a list of the encrypted numbers.
 
   ##Examples
 
       iex> Identicon.hash_input("banana")
-      [114, 179, 2, 191, 41, 122, 34, 138, 117, 115, 1, 35, 239, 239, 124, 65]
+      %Identicon.Image{hex: [114, 179, 2, 191, 41, 122, 34, 138, 117, 115, 1, 35, 239, 239, 124, 65]}
   """
   def hash_input(input) do
-    :crypto.hash(:md5, input)
+    hex = :crypto.hash(:md5, input)
     |> :binary.bin_to_list
+
+    %Identicon.Image{ hex: hex }
   end
 end
