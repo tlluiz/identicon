@@ -63,7 +63,7 @@ defmodule Identicon do
 
   def mirror_row(row) do
     [first, second | _tail] = row
-    row ++ [first, second]
+    row ++ [second, first]
   end
 
   @doc """
